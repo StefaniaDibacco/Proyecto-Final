@@ -19,7 +19,7 @@ class Carrito {
       });
     } catch (error) {
       return res.status(404).json({
-        mensaje: error.message,
+        mensaje: error,
       });
     }
   }
@@ -38,7 +38,7 @@ class Carrito {
       throw new Error('error al agregar producto');
     } catch (error) {
       return res.status(404).json({
-        msg: error.message,
+        msg: error,
       });
     }
   }
@@ -56,7 +56,7 @@ class Carrito {
       throw new Error('error al borrar producto');
     } catch (error) {
       return res.status(404).json({
-        msg: error.message,
+        msg: error,
       });
     }
   }

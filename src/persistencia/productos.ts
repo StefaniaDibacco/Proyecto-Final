@@ -46,7 +46,7 @@ class Productos {
       this.actualizarDB(elementos);
       return elemento;
     } catch (error) {
-      console.log('ERROR: No se pudo agregar un producto. ' + error.message);
+      console.log('ERROR: No se pudo agregar un producto. ' + error);
     }
   }
 
@@ -93,7 +93,7 @@ class Productos {
       this.actualizarDB(elementos);
       return elementos[index];
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   }
 

@@ -28,7 +28,7 @@ class Carrito {
       this.actualizarDB(carritos);
       return true;
     } catch (error) {
-      console.log('ERROR: No se pudo agregar un producto. ' + error.message);
+      console.log('ERROR: No se pudo agregar un producto. ' + error);
       return false;
     }
   }
@@ -46,7 +46,7 @@ class Carrito {
       this.actualizarDB(carritos);
       return true;
     } catch (error) {
-      console.log('ERROR: No se pudo agregar un producto. ' + error.message);
+      console.log('ERROR: No se pudo agregar un producto. ' + error);
       return false;
     }
   }
