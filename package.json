@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "build && node ./dist/index.js",
     "start-dev": "nodemon ./dist/index.js",
-    "dev": "tsc -W && start-dev",
+    "dev": "build && npm run start-dev",
     "build": "tsc"
   },
   "repository": {
