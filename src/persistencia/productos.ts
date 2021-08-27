@@ -1,18 +1,8 @@
-import moment from 'moment';
 import Product from '../interfaces/producto';
+import fs from 'fs';
+import path from 'path';
 
-let elementos = [
-  {
-    stock: 2,
-    nombre: 'mochila',
-    precio: 20,
-    foto: 'https://cdn3.iconfinder.com/data/icons/spring-2-1/30/Backpack-256.png',
-    id: 1,
-    timestamp: '',
-    descripcion: 'escolar',
-    codigo: 'es01',
-  },
-];
+let elementos: Product[] = require('./../db/productos');
 
 class Productos {
   // Metodo para leer mis productos
@@ -36,14 +26,14 @@ class Productos {
   ): Product | undefined {
     try {
       if (typeof nombre !== 'string')
-        throw new Error('Titulo tiene que ser string');
-      if (isNaN(precio)) throw new Error('Price tiene que ser un nro');
+        throw new Error('Nombre tiene que ser string');
+      if (isNaN(precio)) throw new Error('Precio tiene que ser un nro');
       if (typeof foto !== 'string')
-        throw new Error('Thumbnail tiene que ser string de url');
+        throw new Error('Foto tiene que ser string de url');
 
       const elemento = {
         id: elementos.length + 1,
-        timestamp: moment().format('DD/MM/YYYY hh:mm:ss'),
+        timestamp: Date.now(),
         nombre,
         descripcion,
         precio,
@@ -53,6 +43,7 @@ class Productos {
       };
 
       elementos.push(elemento);
+      this.actualizarDB(elementos);
       return elemento;
     } catch (error) {
       console.log('ERROR: No se pudo agregar un producto. ' + error.message);
@@ -99,6 +90,7 @@ class Productos {
       elementos[index].codigo = codigo;
       elementos[index].stock = stock;
 
+      this.actualizarDB(elementos);
       return elementos[index];
     } catch (error) {
       console.log(error.message);
@@ -113,11 +105,18 @@ class Productos {
         (aProduct) => aProduct.id === idBuscado
       );
       elementos = elementos.filter((aProduct) => aProduct.id !== idBuscado);
-
+      this.actualizarDB(elementos);
       return productoEliminado;
     } catch (error) {
       console.log(`Producto no encontrado`);
     }
+  }
+
+  actualizarDB(data: Product[]) {
+    fs.writeFileSync(
+      path.resolve(__dirname, '../db/productos.json'),
+      JSON.stringify(data)
+    );
   }
 }
 

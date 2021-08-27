@@ -7,19 +7,19 @@ const router = Router();
 router.get(
   '/listar/:id?',
   [checkUser, carritoController.checkProductExists],
-  carritoController.getProducts
+  carritoController.getCarrito
 );
 
 router.post(
-  '/agregar/id_producto',
+  '/agregar/:id_carrito',
   [checkUser, carritoController.checkAddProducts],
   carritoController.addProducts
 );
 
 router.delete(
-  '/borrar/:id',
+  '/borrar/:id_carrito',
   [checkUser, carritoController.checkProductExists],
-  carritoController.deleteProducts
+  carritoController.deleteProduct
 );
 
 export default router;

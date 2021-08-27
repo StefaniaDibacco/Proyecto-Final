@@ -1,6 +1,6 @@
 export default interface Product {
   id: number;
-  timestamp: string;
+  timestamp: number;
   nombre: string;
   descripcion: string;
   codigo: string;

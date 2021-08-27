@@ -1,73 +1,65 @@
 import { Request, Response, NextFunction } from 'express';
 import { carritoPersistencia } from '../persistencia/carrito';
 
-class Producto {
+class Carrito {
   checkAddProducts(req: Request, res: Response, next: NextFunction) {
-    const { title, price } = req.body;
-
-    if (!title || !price || typeof title !== 'string' || isNaN(price)) {
-      return res.status(400).json({
-        msg: 'Campos del body invalidos',
-      });
-    }
-
     next();
   }
 
   checkProductExists(req: Request, res: Response, next: NextFunction) {
-    if (req.params.id) {
-      const id = Number(req.params.id);
-
-      const producto = carritoPersistencia.leer(id);
-
-      if (!producto) {
-        return res.status(404).json({
-          msg: 'producto not found',
-        });
-      }
-    }
     next();
   }
 
-  getProducts(req: Request, res: Response) {
+  getCarrito(req: Request, res: Response) {
     const id = Number(req.params.id);
-
-    const producto = id
-      ? carritoPersistencia.leer(id)
-      : carritoPersistencia.leer();
-
-    res.json({
-      data: producto,
-    });
+    try {
+      const carrito = carritoPersistencia.leer(id);
+      return res.json({
+        data: carrito,
+      });
+    } catch (error) {
+      return res.status(404).json({
+        mensaje: error.message,
+      });
+    }
   }
 
   addProducts(req: Request, res: Response) {
     const { producto } = req.body;
-    const newItem = carritoPersistencia.guardar(producto);
-
-    res.json({
-      msg: 'producto agregado con exito',
-      data: newItem,
-    });
+    const idCarrito = Number(req.params.id_carrito);
+    try {
+      const newItem = carritoPersistencia.guardar(producto, idCarrito);
+      if (newItem) {
+        return res.json({
+          msg: 'carrito agregado con exito',
+          data: producto,
+        });
+      }
+      throw new Error('error al agregar producto');
+    } catch (error) {
+      return res.status(404).json({
+        msg: error.message,
+      });
+    }
   }
 
-  updateProducts(req: Request, res: Response) {
-    // const id = Number(req.params.id);
-    // const { title, price, thumbnail } = req.body;
-    // const newItem = carritoPersistencia.actualizar(id, title, price, thumbnail);
-    res.json({
-      // data: newItem,
-      msg: 'actualizando producto',
-    });
-  }
-
-  deleteProducts(req: Request, res: Response) {
-    // const id = Number(req.params.id);
-    // carritoPersistencia.borrarUno(id);
-    res.json({
-      msg: 'producto borrado',
-    });
+  deleteProduct(req: Request, res: Response) {
+    const idProduct = Number(req.body.id_product);
+    const idCarrito = Number(req.params.id_carrito);
+    try {
+      const borrado = carritoPersistencia.borrar(idProduct, idCarrito);
+      if (borrado) {
+        return res.json({
+          msg: 'producto borrado del carrito con exito',
+        });
+      }
+      throw new Error('error al borrar producto');
+    } catch (error) {
+      return res.status(404).json({
+        msg: error.message,
+      });
+    }
   }
 }
 
-export const carritoController = new Producto();
+export const carritoController = new Carrito();

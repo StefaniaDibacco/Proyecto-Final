@@ -3,13 +3,26 @@ import { productsPersistencia } from '../persistencia/productos';
 
 class Producto {
   checkAddProducts(req: Request, res: Response, next: NextFunction) {
-    const { title, price } = req.body;
+    // const { nombre, descripcion, precio, foto, codigo, stock } = req.body;
 
-    if (!title || !price || typeof title !== 'string' || isNaN(price)) {
+    /* if (
+      !nombre ||
+      !precio ||
+      !descripcion ||
+      !foto ||
+      !codigo ||
+      !stock ||
+      typeof nombre !== 'string' ||
+      typeof descripcion !== 'string' ||
+      isNaN(precio) ||
+      typeof foto !== 'string' ||
+      isNaN(codigo) ||
+      isNaN(stock)
+    ) {
       return res.status(400).json({
         msg: 'Campos del body invalidos',
       });
-    }
+    } */
 
     next();
   }
